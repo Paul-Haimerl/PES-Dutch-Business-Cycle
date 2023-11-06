@@ -1,0 +1,52 @@
+---
+title: "Dutch Business Cycle"
+output: html_notebook
+---
+
+#### Set up the project
+
+```{r}
+rm(list=ls())
+source("R/0_Init.R")
+plotPath <- "C:/Users/phaim/OneDrive/PES Research Div/Figures"
+outputPath <- paste0(getwd(), "/Output/")
+InitProject(outputPath = outputPath)
+```
+
+
+#### Run the UC decompositions
+
+```{r}
+nRandom <- 2e4
+UC_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC")
+
+UC_Corr_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = TRUE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Corr")
+
+UC_Frac_result <- UC_Wrapper(y = y, det.type = "frac", corr.ind = TRUE, d = FALSE, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Frac")
+```
+
+
+#### Run the remaining decompositions
+
+```{r}
+# Boosted HP filter
+bHP_result <- runHP(y = y, boosted = T)
+
+# Beveridge Nelson
+BND_results <- RunBND(y = y, nlag = 2)
+```
+
+#### Construct the figures
+
+```{r}
+cycleFigureTib <- mutate(yTib, 
+                         "bHP" = bHP_result[,"cycle"],
+                         BND = BND_results[,"cycle"])
+produceFigure(cycleFigureTib, path = plotPath, cycle = T)
+
+trendFigureTib <- mutate(yTib, 
+                         "bHP" = bHP_result[,"trend"],
+                         BND = BND_results[,"trend"])
+produceFigure(trendFigureTib, path = plotPath, cycle = FALSE)
+```
+
