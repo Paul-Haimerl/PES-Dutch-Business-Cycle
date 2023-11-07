@@ -1763,6 +1763,32 @@ plotPath &lt;- &quot;C:/Users/phaim/OneDrive/PES Research Div/Figures&quot;
 outputPath &lt;- paste0(getwd(), &quot;/Output/&quot;)
 InitProject(outputPath = outputPath)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBvcGVueGxzeFxuTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiByZWFkeGxcbkxvYWRpbmcgcmVxdWlyZWQgcGFja2FnZTogdGlkeXZlcnNlXG7ilIDilIAgQXR0YWNoaW5nIGNvcmUgdGlkeXZlcnNlIHBhY2thZ2VzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2UgMi4wLjAg4pSA4pSAXG7inJQgZHBseXIgICAgIDEuMS4yICAgICDinJQgcmVhZHIgICAgIDIuMS40XG7inJQgZm9yY2F0cyAgIDEuMC4wICAgICDinJQgc3RyaW5nciAgIDEuNS4wXG7inJQgZ2dwbG90MiAgIDMuNC4zICAgICDinJQgdGliYmxlICAgIDMuMi4xXG7inJQgbHVicmlkYXRlIDEuOS4yICAgICDinJQgdGlkeXIgICAgIDEuMy4wXG7inJQgcHVycnIgICAgIDEuMC4yICAgICDilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbuKEuSBVc2UgdGhlIFx1MDAxYl04OztodHRwOi8vY29uZmxpY3RlZC5yLWxpYi5vcmcvXHUwMDA3Y29uZmxpY3RlZCBwYWNrYWdlXHUwMDFiXTg7O1x1MDAwNyB0byBmb3JjZSBhbGwgY29uZmxpY3RzIHRvIGJlY29tZSBlcnJvcnNMb2FkaW5nIHJlcXVpcmVkIHBhY2thZ2U6IGZVQ3BhY2tcbkxvYWRpbmcgcmVxdWlyZWQgcGFja2FnZTogYkhQXG4ifQ== -->
+<pre><code>Loading required package: openxlsx
+Loading required package: readxl
+Loading required package: tidyverse
+── Attaching core tidyverse packages ──────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     ── Conflicts ────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errorsLoading required package: fUCpack
+Loading required package: bHP</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBpbiBpbnN0YWxsLnBhY2thZ2VzIDpcbiAgcGFja2FnZSDigJhiSFDigJkgaXMgbm90IGF2YWlsYWJsZSBmb3IgdGhpcyB2ZXJzaW9uIG9mIFJcblxuQSB2ZXJzaW9uIG9mIHRoaXMgcGFja2FnZSBmb3IgeW91ciB2ZXJzaW9uIG9mIFIgbWlnaHQgYmUgYXZhaWxhYmxlIGVsc2V3aGVyZSxcbnNlZSB0aGUgaWRlYXMgYXRcbmh0dHBzOi8vY3Jhbi5yLXByb2plY3Qub3JnL2RvYy9tYW51YWxzL3ItcGF0Y2hlZC9SLWFkbWluLmh0bWwjSW5zdGFsbGluZy1wYWNrYWdlc1xuIn0= -->
+<pre><code>Warning in install.packages :
+  package ‘bHP’ is not available for this version of R
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBwYmFwcGx5XG4ifQ== -->
+<pre><code>Loading required package: pbapply</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1770,8 +1796,8 @@ InitProject(outputPath = outputPath)</code></pre>
 <h4>Run the UC decompositions</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxublJhbmRvbSA8LSAyZTRcblVDX3Jlc3VsdCA8LSBVQ19XcmFwcGVyKHkgPSB5LCBkZXQudHlwZSA9IFwidHJlbmRcIiwgY29yci5pbmQgPSBGQUxTRSwgZCA9IDEsIG5SYW5kb20gPSBuUmFuZG9tLCBvdXRwdXRQYXRoID0gb3V0cHV0UGF0aCwgZmlsZU5hbWUgPSBcIlVDXCIpXG5cblVDX0NvcnJfcmVzdWx0IDwtIFVDX1dyYXBwZXIoeSA9IHksIGRldC50eXBlID0gXCJ0cmVuZFwiLCBjb3JyLmluZCA9IFRSVUUsIGQgPSAxLCBuUmFuZG9tID0gblJhbmRvbSwgb3V0cHV0UGF0aCA9IG91dHB1dFBhdGgsIGZpbGVOYW1lID0gXCJVQ19Db3JyXCIpXG5cblVDX0ZyYWNfcmVzdWx0IDwtIFVDX1dyYXBwZXIoeSA9IHksIGRldC50eXBlID0gXCJmcmFjXCIsIGNvcnIuaW5kID0gVFJVRSwgZCA9IEZBTFNFLCBuUmFuZG9tID0gblJhbmRvbSwgb3V0cHV0UGF0aCA9IG91dHB1dFBhdGgsIGZpbGVOYW1lID0gXCJVQ19GcmFjXCIpXG5gYGAifQ== -->
-<pre class="r"><code>nRandom &lt;- 2e4
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxublJhbmRvbSA8LSAxZTRcblVDX3Jlc3VsdCA8LSBVQ19XcmFwcGVyKHkgPSB5LCBkZXQudHlwZSA9IFwidHJlbmRcIiwgY29yci5pbmQgPSBGQUxTRSwgZCA9IDEsIG5SYW5kb20gPSBuUmFuZG9tLCBvdXRwdXRQYXRoID0gb3V0cHV0UGF0aCwgZmlsZU5hbWUgPSBcIlVDXCIpXG5cblVDX0NvcnJfcmVzdWx0IDwtIFVDX1dyYXBwZXIoeSA9IHksIGRldC50eXBlID0gXCJ0cmVuZFwiLCBjb3JyLmluZCA9IFRSVUUsIGQgPSAxLCBuUmFuZG9tID0gblJhbmRvbSwgb3V0cHV0UGF0aCA9IG91dHB1dFBhdGgsIGZpbGVOYW1lID0gXCJVQ19Db3JyXCIpXG5cblVDX0ZyYWNfcmVzdWx0IDwtIFVDX1dyYXBwZXIoeSA9IHksIGRldC50eXBlID0gXCJmcmFjXCIsIGNvcnIuaW5kID0gVFJVRSwgZCA9IEZBTFNFLCBuUmFuZG9tID0gblJhbmRvbSwgb3V0cHV0UGF0aCA9IG91dHB1dFBhdGgsIGZpbGVOYW1lID0gXCJVQ19GcmFjXCIpXG5gYGAifQ== -->
+<pre class="r"><code>nRandom &lt;- 1e4
 UC_result &lt;- UC_Wrapper(y = y, det.type = &quot;trend&quot;, corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = &quot;UC&quot;)
 
 UC_Corr_result &lt;- UC_Wrapper(y = y, det.type = &quot;trend&quot;, corr.ind = TRUE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = &quot;UC_Corr&quot;)
@@ -1815,7 +1841,7 @@ produceFigure(trendFigureTib, path = plotPath, cycle = FALSE)</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1dGNoIEJ1c2luZXNzIEN5Y2xlIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KIyMjIyBTZXQgdXAgdGhlIHByb2plY3QNCg0KYGBge3J9DQpybShsaXN0PWxzKCkpDQpzb3VyY2UoIlIvMF9Jbml0LlIiKQ0KcGxvdFBhdGggPC0gIkM6L1VzZXJzL3BoYWltL09uZURyaXZlL1BFUyBSZXNlYXJjaCBEaXYvRmlndXJlcyINCm91dHB1dFBhdGggPC0gcGFzdGUwKGdldHdkKCksICIvT3V0cHV0LyIpDQpJbml0UHJvamVjdChvdXRwdXRQYXRoID0gb3V0cHV0UGF0aCkNCmBgYA0KDQoNCiMjIyMgUnVuIHRoZSBVQyBkZWNvbXBvc2l0aW9ucw0KDQpgYGB7cn0NCm5SYW5kb20gPC0gMmU0DQpVQ19yZXN1bHQgPC0gVUNfV3JhcHBlcih5ID0geSwgZGV0LnR5cGUgPSAidHJlbmQiLCBjb3JyLmluZCA9IEZBTFNFLCBkID0gMSwgblJhbmRvbSA9IG5SYW5kb20sIG91dHB1dFBhdGggPSBvdXRwdXRQYXRoLCBmaWxlTmFtZSA9ICJVQyIpDQoNClVDX0NvcnJfcmVzdWx0IDwtIFVDX1dyYXBwZXIoeSA9IHksIGRldC50eXBlID0gInRyZW5kIiwgY29yci5pbmQgPSBUUlVFLCBkID0gMSwgblJhbmRvbSA9IG5SYW5kb20sIG91dHB1dFBhdGggPSBvdXRwdXRQYXRoLCBmaWxlTmFtZSA9ICJVQ19Db3JyIikNCg0KVUNfRnJhY19yZXN1bHQgPC0gVUNfV3JhcHBlcih5ID0geSwgZGV0LnR5cGUgPSAiZnJhYyIsIGNvcnIuaW5kID0gVFJVRSwgZCA9IEZBTFNFLCBuUmFuZG9tID0gblJhbmRvbSwgb3V0cHV0UGF0aCA9IG91dHB1dFBhdGgsIGZpbGVOYW1lID0gIlVDX0ZyYWMiKQ0KYGBgDQoNCg0KIyMjIyBSdW4gdGhlIHJlbWFpbmluZyBkZWNvbXBvc2l0aW9ucw0KDQpgYGB7cn0NCiMgQm9vc3RlZCBIUCBmaWx0ZXINCmJIUF9yZXN1bHQgPC0gcnVuSFAoeSA9IHksIGJvb3N0ZWQgPSBUKQ0KDQojIEJldmVyaWRnZSBOZWxzb24NCkJORF9yZXN1bHRzIDwtIFJ1bkJORCh5ID0geSwgbmxhZyA9IDIpDQpgYGANCg0KIyMjIyBDb25zdHJ1Y3QgdGhlIGZpZ3VyZXMNCg0KYGBge3J9DQpjeWNsZUZpZ3VyZVRpYiA8LSBtdXRhdGUoeVRpYiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgImJIUCIgPSBiSFBfcmVzdWx0WywiY3ljbGUiXSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBCTkQgPSBCTkRfcmVzdWx0c1ssImN5Y2xlIl0pDQpwcm9kdWNlRmlndXJlKGN5Y2xlRmlndXJlVGliLCBwYXRoID0gcGxvdFBhdGgsIGN5Y2xlID0gVCkNCg0KdHJlbmRGaWd1cmVUaWIgPC0gbXV0YXRlKHlUaWIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICJiSFAiID0gYkhQX3Jlc3VsdFssInRyZW5kIl0sDQogICAgICAgICAgICAgICAgICAgICAgICAgQk5EID0gQk5EX3Jlc3VsdHNbLCJ0cmVuZCJdKQ0KcHJvZHVjZUZpZ3VyZSh0cmVuZEZpZ3VyZVRpYiwgcGF0aCA9IHBsb3RQYXRoLCBjeWNsZSA9IEZBTFNFKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkR1dGNoIEJ1c2luZXNzIEN5Y2xlIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KIyMjIyBTZXQgdXAgdGhlIHByb2plY3QNCg0KYGBge3J9DQpybShsaXN0PWxzKCkpDQpzb3VyY2UoIlIvMF9Jbml0LlIiKQ0KcGxvdFBhdGggPC0gIkM6L1VzZXJzL3BoYWltL09uZURyaXZlL1BFUyBSZXNlYXJjaCBEaXYvRmlndXJlcyINCm91dHB1dFBhdGggPC0gcGFzdGUwKGdldHdkKCksICIvT3V0cHV0LyIpDQpJbml0UHJvamVjdChvdXRwdXRQYXRoID0gb3V0cHV0UGF0aCkNCmBgYA0KDQoNCiMjIyMgUnVuIHRoZSBVQyBkZWNvbXBvc2l0aW9ucw0KDQpgYGB7cn0NCm5SYW5kb20gPC0gMWU0DQpVQ19yZXN1bHQgPC0gVUNfV3JhcHBlcih5ID0geSwgZGV0LnR5cGUgPSAidHJlbmQiLCBjb3JyLmluZCA9IEZBTFNFLCBkID0gMSwgblJhbmRvbSA9IG5SYW5kb20sIG91dHB1dFBhdGggPSBvdXRwdXRQYXRoLCBmaWxlTmFtZSA9ICJVQyIpDQoNClVDX0NvcnJfcmVzdWx0IDwtIFVDX1dyYXBwZXIoeSA9IHksIGRldC50eXBlID0gInRyZW5kIiwgY29yci5pbmQgPSBUUlVFLCBkID0gMSwgblJhbmRvbSA9IG5SYW5kb20sIG91dHB1dFBhdGggPSBvdXRwdXRQYXRoLCBmaWxlTmFtZSA9ICJVQ19Db3JyIikNCg0KVUNfRnJhY19yZXN1bHQgPC0gVUNfV3JhcHBlcih5ID0geSwgZGV0LnR5cGUgPSAiZnJhYyIsIGNvcnIuaW5kID0gVFJVRSwgZCA9IEZBTFNFLCBuUmFuZG9tID0gblJhbmRvbSwgb3V0cHV0UGF0aCA9IG91dHB1dFBhdGgsIGZpbGVOYW1lID0gIlVDX0ZyYWMiKQ0KYGBgDQoNCg0KIyMjIyBSdW4gdGhlIHJlbWFpbmluZyBkZWNvbXBvc2l0aW9ucw0KDQpgYGB7cn0NCiMgQm9vc3RlZCBIUCBmaWx0ZXINCmJIUF9yZXN1bHQgPC0gcnVuSFAoeSA9IHksIGJvb3N0ZWQgPSBUKQ0KDQojIEJldmVyaWRnZSBOZWxzb24NCkJORF9yZXN1bHRzIDwtIFJ1bkJORCh5ID0geSwgbmxhZyA9IDIpDQpgYGANCg0KIyMjIyBDb25zdHJ1Y3QgdGhlIGZpZ3VyZXMNCg0KYGBge3J9DQpjeWNsZUZpZ3VyZVRpYiA8LSBtdXRhdGUoeVRpYiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgImJIUCIgPSBiSFBfcmVzdWx0WywiY3ljbGUiXSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBCTkQgPSBCTkRfcmVzdWx0c1ssImN5Y2xlIl0pDQpwcm9kdWNlRmlndXJlKGN5Y2xlRmlndXJlVGliLCBwYXRoID0gcGxvdFBhdGgsIGN5Y2xlID0gVCkNCg0KdHJlbmRGaWd1cmVUaWIgPC0gbXV0YXRlKHlUaWIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICJiSFAiID0gYkhQX3Jlc3VsdFssInRyZW5kIl0sDQogICAgICAgICAgICAgICAgICAgICAgICAgQk5EID0gQk5EX3Jlc3VsdHNbLCJ0cmVuZCJdKQ0KcHJvZHVjZUZpZ3VyZSh0cmVuZEZpZ3VyZVRpYiwgcGF0aCA9IHBsb3RQYXRoLCBjeWNsZSA9IEZBTFNFKQ0KYGBgDQoNCg==</div>
 
 
 

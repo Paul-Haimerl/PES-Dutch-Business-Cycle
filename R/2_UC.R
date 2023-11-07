@@ -84,7 +84,7 @@ optfn <- function(par0, y, corr.ind = TRUE, START = 10, det.type, d = FALSE, rho
   } else {
     parNames <- c(parNames_1, parNames_2, parNames_3)
   }
-
+  
   tryCatch(
     {
       est <- optim(
@@ -151,7 +151,7 @@ RunUC <- function(y, theta, det.type, corr.ind = NULL) {
 
 
 UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName = NULL) {
-  d.estim <- ifelse(is.logical(d), FALSE, TRUE)
+  d.estim <- ifelse(is.logical(d), TRUE, FALSE)
 
   thetaMat <- thetaRandFree(nRandom = nRandom, d.estim = d.estim, det.type = det.type, corr.ind = corr.ind)
   UCC_theta <- pbapply(thetaMat, 1, function(theta, y, det.type, corr.ind, d) {
@@ -162,7 +162,7 @@ UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, 
   UCC_ResultClean <- UCC_theta[!is.na(UCC_theta[, 1]), ]
   # Sort by -ll in decreasing order
   UCC_Result <- UCC_ResultClean[order(UCC_ResultClean[, 1], decreasing = TRUE), ]
-browser()
+
   # Produce a table with the grid search results
   UCC_theta_hat <- UCC_Result[, !c(str_detect(colnames(UCC_Result), paste(c("Sd", "LL", "corr"),
     collapse = "|"

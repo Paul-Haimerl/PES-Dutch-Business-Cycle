@@ -75,7 +75,6 @@ fUC_opt_ML_ARMA <- function(theta, y, nulim = c(0.05, 30), quiet = TRUE, approx 
     # penalize correlation if too close to +-1
     if (penalty.corr) {
       corr <- cov2cor(Q)[2, 1]
-      if (is.na(corr)) browser()
       if (abs(corr) > .99) {
         suppressWarnings(penalty <- -log((1 - abs(corr)) / .01) * 100)
       } else {
