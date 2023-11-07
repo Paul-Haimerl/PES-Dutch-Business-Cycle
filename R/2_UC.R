@@ -162,7 +162,7 @@ UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, 
   UCC_ResultClean <- UCC_theta[!is.na(UCC_theta[, 1]), ]
   # Sort by -ll in decreasing order
   UCC_Result <- UCC_ResultClean[order(UCC_ResultClean[, 1], decreasing = TRUE), ]
-
+browser()
   # Produce a table with the grid search results
   UCC_theta_hat <- UCC_Result[, !c(str_detect(colnames(UCC_Result), paste(c("Sd", "LL", "corr"),
     collapse = "|"

@@ -16,7 +16,7 @@ LoadPackages <- function(pckg) {
 InitProject <- function(outputPath) {
   # Load packages
   pckgs <- c(
-    "openxlsx", "readxl", "tidyverse", "fUCpack", "bHP", "pbapply"
+    "openxlsx", "readxl", "tidyverse", "fUCpack", "bHP", "pbapply", "lubridate"
   )
   suppressWarnings(sapply(pckgs, LoadPackages))
 

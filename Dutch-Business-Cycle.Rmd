@@ -17,7 +17,7 @@ InitProject(outputPath = outputPath)
 #### Run the UC decompositions
 
 ```{r}
-nRandom <- 2e4
+nRandom <- 1e4
 UC_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC")
 
 UC_Corr_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = TRUE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Corr")
