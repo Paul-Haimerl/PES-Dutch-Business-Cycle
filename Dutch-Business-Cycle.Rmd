@@ -30,8 +30,7 @@ UC_Frac_result <- UC_Wrapper(y = y, det.type = "frac", corr.ind = TRUE, d = FALS
 
 ```{r}
 # Boosted HP filter
-bHP_result <- runHP(y = y, boosted = T)
-
+bHP_results <- RunBND(y = y, nlag = 2)
 # Beveridge Nelson
 BND_results <- RunBND(y = y, nlag = 2)
 ```
@@ -39,6 +38,8 @@ BND_results <- RunBND(y = y, nlag = 2)
 #### Construct the figures
 
 ```{r}
+resultsTib <- rbind(bHP_result, BND_results)
+
 cycleFigureTib <- mutate(yTib, 
                          "bHP" = bHP_result[,"cycle"],
                          BND = BND_results[,"cycle"])

@@ -32,7 +32,7 @@ InitProject <- function(outputPath) {
   # Load data
   suppressMessages({
     yTib <<- read_csv("GDP_NL.csv") %>%
-      mutate(logGDP = log(GDP),
+      mutate(logGDP = log(GDP) * 100,
              Date = mdy(Date))
   })
   y <<- yTib$logGDP
