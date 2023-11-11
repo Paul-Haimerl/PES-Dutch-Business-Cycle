@@ -109,7 +109,7 @@ optfn <- function(par0, y, corr.ind = TRUE, START = 10, det.type, d = FALSE, rho
   tryCatch(
     {
       est <- optim(
-        par = par0, control = list(maxit = 10),
+        par = par0, control = list(maxit = 1000),
         # START: how many initial residuals are burned
         fn = fUC_opt_ML_ARMA, d.int = c(0, 2), START = START, pq = c(2, 0),
         corr = corr.ind, nu.opt = nu.opt, penalty.corr = TRUE,
@@ -183,12 +183,12 @@ param2Qmat <- function(Qmat.params, corr.ind, nu.opt) {
 
 
 
-RunUC <- function(y, theta, det.type, corr.ind = NULL) {
+RunUC <- function(y, theta, det.type, corr.ind = NULL, nu.opt) {
   if (is.null(corr.ind)) corr.ind <- ifelse("corr" %in% names(theta), TRUE, FALSE)
 
   filterOutput <- fUC_opt_ML_ARMA(
     theta = theta, y = y, nulim = c(0, Inf), pq = c(2, 0), corr = corr.ind, d.int = c(0, 2),
-    nu.opt = FALSE, penalty.corr = F, deterministics = det.type, return.filter.output = TRUE,
+    nu.opt = nu.opt, penalty.corr = F, deterministics = det.type, return.filter.output = TRUE,
     Q.trans = "mlv"
   )
 
@@ -198,16 +198,14 @@ RunUC <- function(y, theta, det.type, corr.ind = NULL) {
 
 
 
-UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName = NULL) {
+UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName = NULL, nu.opt) {
   d.estim <- ifelse(is.logical(d), TRUE, FALSE)
-  CSS <- TRUE
 
-  thetaMat <- thetaRandFree(nRandom = nRandom, d.estim = d.estim, det.type = det.type, corr.ind = corr.ind, nu.opt = CSS)
+  thetaMat <- thetaRandFree(nRandom = nRandom, d.estim = d.estim, det.type = det.type, corr.ind = corr.ind, nu.opt = nu.opt)
   UCC_theta <- pbapply(thetaMat, 1, function(theta, y, det.type, corr.ind, d, nu.opt) {
     optfn(theta, y, det.type = det.type, corr.ind = corr.ind, START = 10, d = d, nu.opt = nu.opt)
-  }, y = y, det.type = det.type, corr.ind = corr.ind, d = d, nu.opt = CSS) %>%
+  }, y = y, det.type = det.type, corr.ind = corr.ind, d = d, nu.opt = nu.opt) %>%
     t()
-  browser()
   UCC_ResultClean <- UCC_theta[!is.na(UCC_theta[, 1]), ]
   # Sort by -ll in decreasing order
   UCC_Result <- UCC_ResultClean[order(UCC_ResultClean[, 1], decreasing = TRUE), ]
@@ -220,7 +218,7 @@ UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, 
       theta = theta, y = y, nulim = c(0, Inf), pq = c(2, 0), corr = corr.ind, d.int = c(0, 2.5),
       nu.opt = nu.opt, penalty.corr = F, deterministics = det.type, return.det = TRUE, Q.trans = "mlv"
     )
-  }, y = y, det.type = det.type, corr.ind = corr.ind, nu.opt = CSS)
+  }, y = y, det.type = det.type, corr.ind = corr.ind, nu.opt = nu.opt)
 
   UCC_Result_tib <- as_tibble(UCC_Result)
   if (is.matrix(muVec)) {
@@ -238,12 +236,14 @@ UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, 
 
 
 UC_Wrapper <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName = NULL, theta = NULL) {
+  CSS <- TRUE
   if (is.null(theta)) {
     theta <- UCGridSearch(
       y = y, det.type = det.type, corr.ind = corr.ind, d = d, nRandom = nRandom,
-      outputPath = outputPath, fileName = fileName
+      outputPath = outputPath, fileName = fileName, nu.opt = CSS
     )
   }
-  output <- RunUC(y = y, theta = theta, det.type = det.type, corr.ind = corr.ind)
+  browser()
+  output <- RunUC(y = y, theta = theta, det.type = det.type, corr.ind = corr.ind, nu.opt = CSS)
   return(output)
 }
