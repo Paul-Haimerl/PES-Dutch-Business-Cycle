@@ -18,7 +18,7 @@ InitProject <- function(outputPath) {
   pckgs <- c(
     "openxlsx", "readxl", "tidyverse", "fUCpack", "bHP", "pbapply", "lubridate"
   )
-  suppressWarnings(sapply(pckgs, LoadPackages))
+  sapply(pckgs, LoadPackages)
 
   # Create the output folder
   if (!dir.exists(outputPath)) {

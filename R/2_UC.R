@@ -183,16 +183,26 @@ param2Qmat <- function(Qmat.params, corr.ind, nu.opt) {
 
 
 
-RunUC <- function(y, theta, det.type, corr.ind = NULL, nu.opt) {
-  if (is.null(corr.ind)) corr.ind <- ifelse("corr" %in% names(theta), TRUE, FALSE)
-
-  filterOutput <- fUC_opt_ML_ARMA(
-    theta = theta, y = y, nulim = c(0, Inf), pq = c(2, 0), corr = corr.ind, d.int = c(0, 2),
-    nu.opt = nu.opt, penalty.corr = F, deterministics = det.type, return.filter.output = TRUE,
-    Q.trans = "mlv"
-  )
-
-  outputMat <- cbind(trend = filterOutput$x, cycle = filterOutput$c)
+RunUC <- function(y, theta, det.type, corr.ind, nu.opt) {
+  if (corr.ind){
+    if (nu.opt){
+      nu <- c(1, exp(theta[2]), theta[3])
+      ar <- theta[4:5]
+    } else {
+      nu <- mlogvech2mat(theta[2:4])
+      ar <- theta[5:6]
+    }
+  } else {
+    if (nu.opt){
+      nu <- exp(theta[2]) 
+      ar <- theta[3:4]
+    } else {
+      nu <- exp(theta[2:3])
+      ar <- theta[4:5]
+    }
+  }
+  smootherOutput <- fUC_smooth(y = y, d = theta[1], nu = nu, ar = ar, corr = corr.ind)
+  outputMat <- cbind(trend = smootherOutput$x, cycle = smootherOutput$c)
   return(outputMat)
 }
 
@@ -207,6 +217,7 @@ UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, 
   }, y = y, det.type = det.type, corr.ind = corr.ind, d = d, nu.opt = nu.opt) %>%
     t()
   UCC_ResultClean <- UCC_theta[!is.na(UCC_theta[, 1]), ]
+  UCC_ResultClean <- cbind(UCC_ResultClean, index = 1:nrow(UCC_ResultClean))
   # Sort by -ll in decreasing order
   UCC_Result <- UCC_ResultClean[order(UCC_ResultClean[, 1], decreasing = TRUE), ]
   # Produce a table with the grid search results
@@ -235,15 +246,78 @@ UCGridSearch <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, 
 }
 
 
-UC_Wrapper <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName = NULL, theta = NULL) {
-  CSS <- TRUE
+UC_Wrapper <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName = NULL, theta = NULL, nu.opt = TRUE) {
   if (is.null(theta)) {
     theta <- UCGridSearch(
       y = y, det.type = det.type, corr.ind = corr.ind, d = d, nRandom = nRandom,
-      outputPath = outputPath, fileName = fileName, nu.opt = CSS
+      outputPath = outputPath, fileName = fileName, nu.opt = nu.opt
     )
+    saveRDS(object = theta, file = paste0(outputPath, "theta_", fileName, ".rds"))
   }
-  browser()
-  output <- RunUC(y = y, theta = theta, det.type = det.type, corr.ind = corr.ind, nu.opt = CSS)
+  output <- RunUC(y = y, theta = theta, det.type = det.type, corr.ind = corr.ind, nu.opt = nu.opt)
   return(output)
+}
+
+
+UC_SE <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName, nu.opt = TRUE, index = NULL) {
+  # Pull the initial start values for the best optimization run
+  d.estim <- ifelse(is.logical(d), TRUE, FALSE)
+  thetaMat <- thetaRandFree(nRandom = nRandom, d.estim = d.estim, det.type = det.type, corr.ind = corr.ind, nu.opt = nu.opt)
+  # Get the index of the best optim run
+  if (is.null(index)) index <- read_excel(paste0(outputPath, fileName, ".xlsx"))[[1, "index"]]
+  theta <- thetaMat[index, ]
+  # Compute the hessian matrix
+  Hessian <- optimHess(theta,
+    control = list(maxit = 1000), fn = fUC_opt_ML_ARMA, d.int = c(0, 2), START = 10, pq = c(2, 0),
+    corr = corr.ind, nu.opt = nu.opt, penalty.corr = TRUE, y = y, deterministics = det.type, d = d
+  )
+  seVec <- SE_fctn(theta = theta, hessianMat = Hessian)
+  saveRDS(object = seVec, file = paste0(outputPath, "SE_", index, "_", fileName, ".rds"))  
+  return(seVec)
+}
+
+
+
+#' @description Function that computes SE based on the Hessian matrix corrected for the optimization parameter
+#' constraining function
+#' @param theta vector of estimates
+#' @param hessianMat Hessian of theta
+#' @export Vector of the estimated standard errors
+
+SE_fctn <- function(theta, hessianMat) {
+  correctionMat <- numDeriv::jacobian(ParConstrain_fctn, theta)
+  CovMat <- correctionMat %*% solve(hessianMat) %*% t(correctionMat)
+  SEVec <- sqrt(diag(CovMat))
+  names(SEVec) <- names(theta)
+  return(SEVec)
+}
+
+
+
+ParConstrain_fctn <- function(par) {
+  theta <- par
+  d <- ifelse("d" %in% names(par), TRUE, 0)
+  nu.opt <- ifelse("nu" %in% names(par) | "nu_1" %in% names(par), TRUE, FALSE)
+  corr.ind <- ifelse((length(par) - as.numeric(d) - 2 - nu.opt - (1 - as.numeric(nu.opt)) * 2) > 0, TRUE, FALSE)
+
+  if (nu.opt) {
+    Q_index <- 2
+  } else {
+    if (corr.ind) {
+      Q_index <- 2:4
+    } else {
+      Q_index <- 2:3
+    }
+  }
+  if (!is.logical(d)) Q_index <- Q_index - 1
+  if (nu.opt) {
+    theta[Q_index] <- exp(par[Q_index])
+  } else {
+    if (corr.ind) {
+      theta[Q_index] <- mlogvech2mat(par[Q_index])
+    } else {
+      theta[Q_index] <- exp(par[Q_index])
+    }
+  }
+  return(theta)
 }
