@@ -17,44 +17,56 @@ InitProject(outputPath = outputPath)
 #### Run the UC decompositions
 
 ```{r}
-nRandom <- 500
+nRandom <- 1000
 UC_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC")
+saveRDS(object = UC_result, file = "UC_result.rds")
 UC_Corr_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = TRUE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Corr")
+saveRDS(object = UC_Corr_result, file = "UC_Corr_result.rds")
 UC_Frac_result <- UC_Wrapper(y = y, det.type = "frac", corr.ind = TRUE, d = FALSE, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Frac")
+saveRDS(object = UC_Frac_result, file = "UC_Frac_result.rds")
+
 ```
 
 #### Obtain SE for the parameter estimates
 
 ```{r}
-UC_SE(y = y, det.type = "trend", corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC")
-UC_SE(y = y, det.type = "trend", corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC")
-UC_SE(y = y, det.type = "frac", corr.ind = TRUE, d = FALSE, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Frac")
+round(UC_SE(y = y, det.type = "trend", corr.ind = FALSE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC"), 3)
+round(UC_SE(y = y, det.type = "trend", corr.ind = TRUE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Corr"), 3)
+round(UC_SE(y = y, det.type = "frac", corr.ind = TRUE, d = FALSE, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Frac"), 3)
 ```
-
-
 
 #### Run the remaining decompositions
 
 ```{r}
 # Boosted HP filter
-bHP_results <- RunBND(y = y, nlag = 2)
+bHP_results_raw <- BoostedHP(x = y, lambda = 1600, stopping = "BIC", iter = TRUE)
+bHP_results <- cbind(trend = bHP_results_raw$trend, cycle = bHP_results_raw$cycle)[-1, ]
+saveRDS(object = bHP_results, file = "bHP_results.rds")
 # Beveridge Nelson
-BND_results <- RunBND(y = y, nlag = 2)
+BND_results <- RunBND(y = y, nlag = 2)[-1,]
+saveRDS(object = BND_results, file = "BND_results.rds")
 ```
 
 #### Construct the figures
 
 ```{r}
-resultsTib <- rbind(bHP_result, BND_results)
+produceGDPFigure(dataTib = yTib, path = plotPath)
 
-cycleFigureTib <- mutate(yTib, 
-                         "bHP" = bHP_result[,"cycle"],
+cycleFigureTib <- mutate(yTib[-nrow(yTib),], 
+                         UC0 = UC_result[,"cycle"],
+                         UCCorr = UC_Corr_result[,"cycle"],
+                         UCFrac = UC_Frac_result[,"cycle"],
+                         bHP = bHP_results[,"cycle"],
                          BND = BND_results[,"cycle"])
-produceFigure(cycleFigureTib, path = plotPath, cycle = T)
 
-trendFigureTib <- mutate(yTib, 
-                         "bHP" = bHP_result[,"trend"],
+produceTCFigure(cycleFigureTib, path = plotPath, cycle = T)
+
+trendFigureTib <- mutate(yTib[-nrow(yTib),],
+                         UC0 = UC_result[,"trend"],
+                         UCCorr = UC_Corr_result[,"trend"],
+                         UCFrac = UC_Frac_result[,"trend"],
+                         bHP = bHP_results[,"trend"],
                          BND = BND_results[,"trend"])
-produceFigure(trendFigureTib, path = plotPath, cycle = FALSE)
+produceTCFigure(trendFigureTib, path = plotPath, cycle = FALSE)
 ```
 

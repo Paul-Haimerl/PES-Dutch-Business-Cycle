@@ -184,26 +184,13 @@ param2Qmat <- function(Qmat.params, corr.ind, nu.opt) {
 
 
 RunUC <- function(y, theta, det.type, corr.ind, nu.opt) {
-  if (corr.ind){
-    if (nu.opt){
-      nu <- c(1, exp(theta[2]), theta[3])
-      ar <- theta[4:5]
-    } else {
-      nu <- mlogvech2mat(theta[2:4])
-      ar <- theta[5:6]
-    }
-  } else {
-    if (nu.opt){
-      nu <- exp(theta[2]) 
-      ar <- theta[3:4]
-    } else {
-      nu <- exp(theta[2:3])
-      ar <- theta[4:5]
-    }
-  }
-  smootherOutput <- fUC_smooth(y = y, d = theta[1], nu = nu, ar = ar, corr = corr.ind)
-  outputMat <- cbind(trend = smootherOutput$x, cycle = smootherOutput$c)
-  return(outputMat)
+  filterOutput <- fUC_opt_ML_ARMA(
+    theta = theta, y = y, nulim = c(0, Inf), pq = c(2, 0), corr = corr.ind, d.int = c(0, 2),
+    nu.opt = nu.opt, penalty.corr = F, deterministics = det.type, return.filter.output = TRUE,
+    Q.trans = "mlv"
+  )
+  outputMat <- cbind(trend = filterOutput$x, cycle = filterOutput$c)
+  return(outputMat[-1,])
 }
 
 
@@ -259,21 +246,22 @@ UC_Wrapper <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fi
 }
 
 
-UC_SE <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName, nu.opt = TRUE, index = NULL) {
+UC_SE <- function(y, det.type, corr.ind, d = FALSE, nRandom, outputPath, fileName, nu.opt = TRUE, optimRun = 1) {
   # Pull the initial start values for the best optimization run
   d.estim <- ifelse(is.logical(d), TRUE, FALSE)
   thetaMat <- thetaRandFree(nRandom = nRandom, d.estim = d.estim, det.type = det.type, corr.ind = corr.ind, nu.opt = nu.opt)
   # Get the index of the best optim run
-  if (is.null(index)) index <- read_excel(paste0(outputPath, fileName, ".xlsx"))[[1, "index"]]
+  index <- read_excel(paste0(outputPath, fileName, ".xlsx"))[[optimRun, "index"]]
   theta <- thetaMat[index, ]
   # Compute the hessian matrix
-  Hessian <- optimHess(theta,
-    control = list(maxit = 1000), fn = fUC_opt_ML_ARMA, d.int = c(0, 2), START = 10, pq = c(2, 0),
-    corr = corr.ind, nu.opt = nu.opt, penalty.corr = TRUE, y = y, deterministics = det.type, d = d
+  optimResults <- optim(theta,
+                    control = list(maxit = 1000), fn = fUC_opt_ML_ARMA, d.int = c(0, 2), START = 10, pq = c(2, 0),
+                    corr = corr.ind, nu.opt = nu.opt, penalty.corr = TRUE, y = y, deterministics = det.type, d = d, method = "BFGS", hessian = T
   )
-  seVec <- SE_fctn(theta = theta, hessianMat = Hessian)
+  seVec <- SE_fctn(theta = theta, hessianMat = optimResults$hessian)
   saveRDS(object = seVec, file = paste0(outputPath, "SE_", index, "_", fileName, ".rds"))  
-  return(seVec)
+  outputVec <- c("ll" = optimResults$value, seVec)
+  return(outputVec)
 }
 
 

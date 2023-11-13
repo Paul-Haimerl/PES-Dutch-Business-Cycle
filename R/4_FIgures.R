@@ -69,22 +69,25 @@ produceTCFigure <- function(dataTib, path, cycle) {
   black <- "#000000"
   grey <- "#525252"
   blue <- "#124AAD"
+  green <- "#66a182"
+  red <- "#d1495b"
   themeElement <- produceThemeElement(textSize = 25)
-  colors <- c("bHP" = orange, "BNP" = blue, "log GDP" = black)
+  
+  colors <- c("bHP" = grey, "BNP" = blue, "log GDP" = black, "UC-0" = orange, "UC-Corr" = green, "UC-Frac" = red)
 
   # Prepare the data
   fileName <- ifelse(cycle, "cylce", "trend")
-  figureTib <- mutate(dataTib, 
-                           "bHP" = bHP_result[,fileName],
-                           BND = BND_results[,fileName])
   
   # Produce the figure
-  y_name <- ifelse(cycle, "log GDP", "%-Deviation")
-  figure_1 <- figureTib %>%
+  y_name <- ifelse(cycle, "%-Deviation", "log GDP")
+  figure_1 <- dataTib %>%
     ggplot(aes(x = Date)) +
     geom_line(aes(y = bHP, color = "bHP"), linewidth = .75) +
     geom_line(aes(y = BND, color = "BNP"), linewidth = .75) +
-    scale_x_date(date_breaks = "5 year", date_labels = c("%Y"), name = "") +
+    geom_line(aes(y = UC0, color = "UC-0"), linewidth = .75) +
+    geom_line(aes(y = UCCorr, color = "UC-Corr"), linewidth = .75) +
+    geom_line(aes(y = UCFrac, color = "UC-Frac"), linewidth = .75) +
+    scale_x_date(date_breaks = "4 year", date_labels = c("%Y"), name = "") +
     scale_y_continuous(name = y_name) +
     scale_color_manual(values = colors) +
     theme_bw() +
@@ -95,8 +98,8 @@ produceTCFigure <- function(dataTib, path, cycle) {
       geom_hline(yintercept = 0, linewidth = .75)
   } else {
     figure_2 <- figure_1 +
-      geom_line(aes(y = logGDP, color = "log GDP"), linewidth = .75)
+      geom_line(aes(y = logGDP, color = "log GDP"), linewidth = 1)
   }
 
-  ggsave(figure_2, filename = paste0(path, "/", fileName, ".pdf"), height = 8, width = 14)
+  ggsave(figure_2, filename = paste0(path, "/", fileName, ".jpg"), height = 8, width = 14)
 }
