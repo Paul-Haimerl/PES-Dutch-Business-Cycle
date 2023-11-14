@@ -23,7 +23,7 @@ saveRDS(object = UC_result, file = "UC_result.rds")
 UC_Corr_result <- UC_Wrapper(y = y, det.type = "trend", corr.ind = TRUE, d = 1, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Corr")
 saveRDS(object = UC_Corr_result, file = "UC_Corr_result.rds")
 UC_Frac_result <- UC_Wrapper(y = y, det.type = "frac", corr.ind = TRUE, d = FALSE, nRandom = nRandom, outputPath = outputPath, fileName = "UC_Frac")
-saveRDS(object = UC_Frac_result, file = "UC_Frac_result.rds")
+saveRDS(object = UC_Frac_result, file = "UC_Frac_result2.rds")
 
 ```
 
